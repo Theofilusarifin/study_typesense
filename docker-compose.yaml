@@ -1,3 +1,4 @@
+version: '3.8'
 services:
   typesense:
     image: typesense/typesense:26.0
@@ -7,4 +8,15 @@ services:
       - "8108:8108"
     volumes:
       - ./typesense-data:/data
-    command: '--data-dir /data --api-key=xyz --enable-cors'
+    environment:
+      - TYPESENSE_API_KEY
+    command: >
+      --data-dir /data
+      --api-key=$${TYPESENSE_API_KEY}
+      --enable-cors
+    networks:
+      - typesense-network
+
+networks:
+  typesense-network:
+    driver: bridge
